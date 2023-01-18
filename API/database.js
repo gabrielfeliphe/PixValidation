@@ -18,10 +18,57 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     }
   });
 
-  sequelize.authenticate()
-  .then(() => {
-    console.log('Conexão estabelecida com sucesso.');
-  })
-  .catch(err => {
-    console.error('Não foi possível estabelecer conexão:', err);
+  const PIXKEY = sequelize.define('PIXKEY', {
+    id: {
+      type: Sequelize.STRING,
+      primaryKey: true
+    },
+    chavepix: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    banco_id: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    conta_id: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    }
   });
+  
+  const Conta = sequelize.define('conta', {
+    id: {
+      type: Sequelize.STRING,
+      primaryKey: true
+    },
+    nome: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    cpf_cnpj: {
+      type: Sequelize.STRING,
+      allowNull: false
+    }
+  });
+  
+  const Banco = sequelize.define('banco', {
+    id: {
+      type: Sequelize.STRING,
+      primaryKey: true
+    },
+    nome: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    agencia: {
+      type: Sequelize.STRING,
+      allowNull: false
+    },
+    CC: {
+      type: Sequelize.STRING,
+      allowNull: false
+    }
+  });
+  
+  sequelize.sync({ force: true });
