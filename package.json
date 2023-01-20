@@ -1,6 +1,11 @@
 {
-    "name": "root-project",
+    "name": "myproject",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
     "scripts": {
-        "start-api": "cd API && npm install && npm start"
-    }
-}
+    "start": "cd API && npm start",
+    },
+    "author": "",
+    "license": "ISC"
+ }
