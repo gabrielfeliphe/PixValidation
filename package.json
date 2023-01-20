@@ -1,0 +1,6 @@
+{
+    "name": "root-project",
+    "scripts": {
+        "start-api": "cd API && npm install && npm start"
+    }
+}
