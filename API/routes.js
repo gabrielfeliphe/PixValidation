@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const { Banco, Conta, PIXKEY , GetAllByQuery} = require('./database');
+const { Banco, Conta, PIXKEY, GetAllByQuery } = require('./database');
 const validation = require('./validation');
 
 router.get('/pixkey', async (req, res) => {
     try {
-    res.json(await GetAllByQuery);
+        res.json(await GetAllByQuery);
     } catch (err) {
-    res.status(500).json({ error: err.message });
+        res.status(500).json({ error: err.message });
     }
-    });
+});
 
 router.get('/pixkey/:id', async (req, res) => {
     try {
@@ -26,7 +26,7 @@ router.get('/pixkey/:id', async (req, res) => {
 
 router.post('/pixkey', async (req, res) => {
     try {
-        const {chavepix, banco_id, conta_id, tipochave ,validado} = req.body;
+        const { chavepix, banco_id, conta_id, tipochave, validado } = req.body;
         // Verify if conta and banco exist
         const contaExist = await Conta.findOne({ where: { id: conta_id } });
         const bancoExist = await Banco.findOne({ where: { id: banco_id } });
@@ -34,13 +34,13 @@ router.post('/pixkey', async (req, res) => {
             res.status(404).json({ error: 'Conta or Banco not found' });
         } else {
             // Verify if tipochave is in the allowedTypes
-            if(!validation.pix_key_type.allowedTypes.includes(tipochave)) {
+            if (!validation.pix_key_type.allowedTypes.includes(tipochave)) {
                 res.status(400).json({ error: 'Invalid tipochave' });
                 return;
             }
             // Verify if chavepix matches the pattern of the tipochave
             const pattern = validation.pix_key.when.pix_key_type[tipochave].pattern;
-            if(!pattern.test(chavepix)) {
+            if (!pattern.test(chavepix)) {
                 res.status(400).json({ error: 'Invalid chavepix' });
                 return;
             }
@@ -49,7 +49,7 @@ router.post('/pixkey', async (req, res) => {
                 res.status(400).send({ message: "chave pix já existe" });
                 return;
             }
-            const pixkey = await PIXKEY.create({chavepix, banco_id, conta_id, tipochave, validado });
+            const pixkey = await PIXKEY.create({ chavepix, banco_id, conta_id, tipochave, validado });
             res.send(pixkey);
         }
     } catch (err) {
