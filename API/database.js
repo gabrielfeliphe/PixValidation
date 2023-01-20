@@ -70,5 +70,7 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
       allowNull: false
     }
   });
-  
-  sequelize.sync({ force: true });
+
+  sequelize.sync();
+
+module.exports = {Banco,Conta,PIXKEY}
