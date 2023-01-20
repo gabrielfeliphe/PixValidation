@@ -35,6 +35,14 @@ const PIXKEY = sequelize.define('PIXKEY', {
   conta_id: {
     type: Sequelize.INTEGER,
     allowNull: false,
+  },
+  tipochave: {
+    type: Sequelize.STRING,
+    allowNull: false,
+  },
+  validado: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
   }
 }, {
   freezeTableName: true
@@ -84,4 +92,9 @@ const Banco = sequelize.define('banco', {
 
 sequelize.sync();
 
-module.exports = { Banco, Conta, PIXKEY };
+//Criado esse método, pois o banco utilizado não permite FK e o ORM utiliza disso caso for relacionado os bancos via código
+const GetAllByQuery = sequelize.query('SELECT PIXKEY.*, conta.*, banco.* FROM PIXKEY INNER JOIN conta ON PIXKEY.conta_id = conta.id INNER JOIN banco ON PIXKEY.banco_id = banco.id', {
+  type: sequelize.QueryTypes.SELECT
+});
+
+module.exports = { Banco, Conta, PIXKEY ,GetAllByQuery };
