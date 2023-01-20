@@ -32,6 +32,7 @@ router.post('/pixkey', async (req, res) => {
         if (!contaExist || !bancoExist) {
             res.status(404).json({ error: 'Conta or Banco not found' });
         } else {
+            delete req.body.id;
             const pixkey = await PIXKEY.create(req.body);
             res.json(pixkey);
         }
@@ -83,6 +84,16 @@ router.get('/banco', async (req, res) => {
         res.status(500).json({ error: err.message });
     }
 });
+
+router.post('/banco', async (req, res) => {
+    try {
+    delete req.body.id;
+    const banco = await Banco.create(req.body);
+    res.json(banco);
+    } catch (err) {
+    res.status(500).json({ error: err.message });
+    }
+    });
 
 router.get('/banco/:id', async (req, res) => {
     try {
@@ -149,6 +160,7 @@ router.get('/conta/:id', async (req, res) => {
 
 router.post('/conta', async (req, res) => {
     try {
+        delete req.body.id;
         const conta = await Conta.create(req.body);
         res.json(conta);
     } catch (err) {

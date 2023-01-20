@@ -44,7 +44,8 @@ const Conta = sequelize.define('conta', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
-    autoIncrement: true
+    autoIncrement: true,
+    allowNull: false
   },
   nome: {
     type: Sequelize.STRING,
