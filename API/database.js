@@ -94,7 +94,7 @@ const Banco = sequelize.define('BANCO', {
 sequelize.sync();
 
 //Criado esse método, pois o banco utilizado não permite FK e o ORM utiliza disso caso for relacionado os bancos via código
-const GetAllByQuery = sequelize.query('SELECT DISTINCT PIXKEY.*, CONTA.*, BANCO.* FROM PIXKEY LEFT JOIN CONTA ON PIXKEY.conta_id = CONTA.id LEFT JOIN BANCO ON PIXKEY.banco_id = BANCO.id', {
+const GetAllByQuery = sequelize.query('SELECT DISTINCT PIXKEY.*, CONTA.nome as TITULAR, CONTA.cpf_cnpj AS DOCUMENTO, BANCO.nome as NOME_BANCO, BANCO.agencia, BANCO.CC FROM PIXKEY INNER JOIN CONTA ON PIXKEY.conta_id = CONTA.id INNER JOIN BANCO ON PIXKEY.banco_id = BANCO.id', {
   type: sequelize.QueryTypes.SELECT
 });
 
