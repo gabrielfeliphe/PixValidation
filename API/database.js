@@ -14,8 +14,9 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     max: 5,
     min: 0,
     acquire: 30000,
-    idle: 10000
-  }
+    idle: 2
+  },
+  logging: false
 });
 
 const PIXKEY = sequelize.define('PIXKEY', {
@@ -48,7 +49,7 @@ const PIXKEY = sequelize.define('PIXKEY', {
   freezeTableName: true
 });
 
-const Conta = sequelize.define('conta', {
+const Conta = sequelize.define('CONTA', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -68,7 +69,7 @@ const Conta = sequelize.define('conta', {
     freezeTableName: true
   });
 
-const Banco = sequelize.define('banco', {
+const Banco = sequelize.define('BANCO', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -93,8 +94,8 @@ const Banco = sequelize.define('banco', {
 sequelize.sync();
 
 //Criado esse método, pois o banco utilizado não permite FK e o ORM utiliza disso caso for relacionado os bancos via código
-const GetAllByQuery = sequelize.query('SELECT PIXKEY.*, conta.*, banco.* FROM PIXKEY INNER JOIN conta ON PIXKEY.conta_id = conta.id INNER JOIN banco ON PIXKEY.banco_id = banco.id', {
+const GetAllByQuery = sequelize.query('SELECT DISTINCT PIXKEY.*, CONTA.*, BANCO.* FROM PIXKEY LEFT JOIN CONTA ON PIXKEY.conta_id = CONTA.id LEFT JOIN BANCO ON PIXKEY.banco_id = BANCO.id', {
   type: sequelize.QueryTypes.SELECT
 });
 
-module.exports = { Banco, Conta, PIXKEY ,GetAllByQuery };
+module.exports = { Banco, Conta, PIXKEY, GetAllByQuery };

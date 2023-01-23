@@ -4,8 +4,11 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-    "start": "cd API && npm start"
+        "start": "cd API && npm start"
     },
     "author": "",
-    "license": "ISC"
- }
+    "license": "ISC",
+    "devDependencies": {
+        "supertest": "^6.3.3"
+    }
+}
