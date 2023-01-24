@@ -1,17 +1,14 @@
 const request = require('supertest');
 const router = require('./routes');
-const { Banco, Conta, PIXKEY, GetAllByQuery } = require('./database');
+const { Banco, Conta, PIXKEY } = require('./database');
 const express = require('express');
 const bodyParser = require('body-parser');
-
 
 const { v4: uuidv4 } = require('uuid');
 
 const app = express();
 app.use(bodyParser.json());
 app.use(router);
-
-
 
 describe('GET /pixkey', () => {
 
