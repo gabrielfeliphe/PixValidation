@@ -1,6 +1,9 @@
 const request = require('supertest');
-const router = require('./routes');
-const { Banco, Conta, PIXKEY } = require('./database');
+const router = require('../routes/routes');
+const { Banco } = require('../models/banco');
+const { Conta } = require('../models/conta');
+const { PIXKEY } = require('../models/pixkey');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
