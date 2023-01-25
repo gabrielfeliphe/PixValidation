@@ -3,8 +3,8 @@ const { Conta } = require('../models/conta');
 const { Banco } = require('../models/banco');
 const validation = require('../middlewares/validation');
 
-const getAllByQuery = async () => {
-    return await GetAllByQuery
+const getAllByQuery = async () => { // Query foi feita, pois o banco utilizado não aceita FK então as associações tiveram de ser feitas na mão
+    return await GetAllByQuery('SELECT DISTINCT PIXKEY.*, CONTA.nome as TITULAR, CONTA.cpf_cnpj AS DOCUMENTO, BANCO.nome as NOME_BANCO, BANCO.agencia, BANCO.CC FROM PIXKEY INNER JOIN CONTA ON PIXKEY.conta_id = CONTA.id INNER JOIN BANCO ON PIXKEY.banco_id = BANCO.id')
 };
 
 const getById = async (id) => {
