@@ -19,7 +19,7 @@ describe('GET /pixkey', () => {
     beforeAll(async () => {
         const [pixkey, created] = await PIXKEY.findOrCreate({
             where: { chavepix: '873.078.680-08' },
-            defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true }
+            defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true, email:"EMAILLEGAL@BEMLEGALZAO.COM" }
         });
         PIX = pixkey;
     });
@@ -54,7 +54,7 @@ describe('GET /pixkey/:id', () => {
     beforeAll(async () => {
         const [pixkey, created] = await PIXKEY.findOrCreate({
             where: { chavepix: '873.078.680-08' },
-            defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true }
+            defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"}
         });
         pixkeyId = pixkey.id;
     });
@@ -83,7 +83,7 @@ describe('POST /pixkey', () => {
     beforeAll(async () => {
         const [pixkey, created] = await PIXKEY.findOrCreate({
             where: { chavepix: '873.078.680-08' },
-            defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true }
+            defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"}
         });
         pixkeyId = pixkey.id;
     });
@@ -110,7 +110,7 @@ describe('POST /pixkey', () => {
         // Act
         const response = await request(app)
             .post('/pixkey')
-            .send({ chavepix: uuidv4(), banco_id: bankId, conta_id: accountId, tipochave: 'CHAVE_ALEATORIA', validado: false });
+            .send({ chavepix: uuidv4(), banco_id: bankId, conta_id: accountId, tipochave: 'CHAVE_ALEATORIA', validado: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
         // Assert
         expect(response.status).toBe(200);
     });
@@ -119,7 +119,7 @@ describe('POST /pixkey', () => {
         // Act
         const response = await request(app)
             .post('/pixkey')
-            .send({ chavepix: '873.078.680-08', banco_id: 9999, conta_id: 99999, tipochave: 'CPF', validado: true });
+            .send({ chavepix: '873.078.680-08', banco_id: 9999, conta_id: 99999, tipochave: 'CPF', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
 
         // Assert
@@ -130,7 +130,7 @@ describe('POST /pixkey', () => {
         // Act
         const response = await request(app)
             .post('/pixkey')
-            .send({ chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'invalid_key_type', validado: true });
+            .send({ chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'invalid_key_type', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(400);
@@ -141,7 +141,7 @@ describe('POST /pixkey', () => {
         // Act
         const response = await request(app)
             .post('/pixkey')
-            .send({ chavepix: 'invalid_key', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true });
+            .send({ chavepix: 'invalid_key', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(400);
@@ -151,7 +151,17 @@ describe('POST /pixkey', () => {
         // Act
         const response = await request(app)
             .post('/pixkey')
-            .send({ chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true });
+            .send({ chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+
+        // Assert
+        expect(response.status).toBe(400);
+    });
+
+    it('deve retornar 400 se o email não for válido', async () => {
+        // Act
+        const response = await request(app)
+            .post('/pixkey')
+            .send({ chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true , email:"email invalido 777 raffa moreira mano"});
 
         // Assert
         expect(response.status).toBe(400);
@@ -164,7 +174,7 @@ describe('PUT /pixkey/:id', () => {
     beforeAll(async () => {
         const [pixkey, created] = await PIXKEY.findOrCreate({
             where: { chavepix: '873.078.680-08' },
-            defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true }
+            defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true, email:"EMAILLEGAL@BEMLEGALZAO.COM" }
         });
         PIX = pixkey;
     });
@@ -192,7 +202,7 @@ describe('PUT /pixkey/:id', () => {
         // Act
         const response = await request(app)
             .put(`/pixkey/${PIX.id}`)
-            .send({ chavepix: '931.946.870-26', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: false });
+            .send({ chavepix: '931.946.870-26', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(200);
@@ -203,7 +213,7 @@ describe('PUT /pixkey/:id', () => {
         // Act
         const response = await request(app)
             .put('/pixkey/1')
-            .send({ chavepix: '931.946.870-26', banco_id: 999, conta_id: 999, tipochave: 'CPF', validado: false });
+            .send({ chavepix: '931.946.870-26', banco_id: 999, conta_id: 999, tipochave: 'CPF', validado: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(404);
@@ -213,7 +223,7 @@ describe('PUT /pixkey/:id', () => {
         // Act
         const response = await request(app)
             .put('/pixkey/99999')
-            .send({ chavepix: '684.495.170-10', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: false });
+            .send({ chavepix: '684.495.170-10', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(404);
@@ -226,7 +236,7 @@ describe('DELETE /pixkey/:id', () => {
     beforeAll(async () => {
         const [pixkey, created] = await PIXKEY.findOrCreate({
             where: { chavepix: '04430029-5ace-4605-88db-e147ecf7781f' },
-            defaults: { chavepix: '04430029-5ace-4605-88db-e147ecf7781f', banco_id: 1, conta_id: 1, tipochave: 'CHAVE_ALEATORIA', validado: true }
+            defaults: { chavepix: '04430029-5ace-4605-88db-e147ecf7781f', banco_id: 1, conta_id: 1, tipochave: 'CHAVE_ALEATORIA', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"}
         });
         pixkeyId = pixkey.id;
     });

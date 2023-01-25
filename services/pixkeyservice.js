@@ -28,6 +28,9 @@ const create = async (data) => {
     if (!validation.pix_key.when.pix_key_type[tipochave].pattern.test(data.chavepix)) {
         throw { message: `O valor ${data.chavepix} não é válido para o tipo de chave ${data.tipochave}`, statusCode: 400 };
     }
+    if (!validation.pix_key.when.pix_key_type['EMAIL'].pattern.test(data.email)) {
+        throw { message: "O email não é válido", statusCode: 400 };
+    }
     const { banco_id, conta_id } = data;
     const banco = await Banco.findByPk(banco_id);
     const conta = await Conta.findByPk(conta_id);
@@ -52,6 +55,9 @@ const update = async (id, data) => {
     }
     if (!validation.pix_key.when.pix_key_type[tipochave].pattern.test(data.chavepix)) {
         throw { message: `O valor ${data.pix_key} não é válido para o tipo de chave ${data.tipochave}`, statusCode: 400 };
+    }
+    if (!validation.pix_key.when.pix_key_type['EMAIL'].pattern.test(data.email)) {
+        throw { message: "O email não é válido", statusCode: 400 };
     }
     const { banco_id, conta_id } = data;
     const banco = await Banco.findByPk(banco_id);
