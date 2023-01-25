@@ -12,13 +12,13 @@ const getAllPixkeys = async (req, res) => {
 const getPixkeyById = async (req, res) => {
     try {
         const pixkey = await getById(req.params.id);
-        if (!pixkey) {
-            res.status(404).json({ error: 'Pixkey not found' });
-        } else {
-            res.json(pixkey);
-        }
+        res.json(pixkey);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        if (err.statusCode) {
+            res.status(err.statusCode).json({ error: err.message });
+        } else {
+            res.status(500).json({ error: err.message });
+        }
     }
 };
 
@@ -27,7 +27,11 @@ const createPixkey = async (req, res) => {
         const pixkey = await create(req.body);
         res.json(pixkey);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        if (err.statusCode) {
+            res.status(err.statusCode).json({ error: err.message });
+        } else {
+            res.status(500).json({ error: err.message });
+        }
     }
 };
 
@@ -36,7 +40,11 @@ const updatePixkey = async (req, res) => {
         const pixkey = await update(req.params.id, req.body);
         res.json(pixkey);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        if (err.statusCode) {
+            res.status(err.statusCode).json({ error: err.message });
+        } else {
+            res.status(500).json({ error: err.message });
+        }
     }
 };
 
@@ -45,7 +53,7 @@ const removePixkey = async (req, res) => {
         await remove(req.params.id);
         res.json({ message: 'Pixkey removed successfully' });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        res.status(err.statusCode || 500).json({ error: err.message });
     }
 };
 
