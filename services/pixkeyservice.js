@@ -3,8 +3,8 @@ const { Conta } = require('../models/conta');
 const { Banco } = require('../models/banco');
 const validation = require('../middlewares/validation');
 
-const getAllByQuery = async () => {
-    return await GetAllByQuery
+const getAllByQuery = async () => { // Query foi feita, pois o banco utilizado não aceita FK então as associações tiveram de ser feitas na mão
+    return await GetAllByQuery('SELECT DISTINCT PIXKEY.*, CONTA.nome as TITULAR, CONTA.cpf_cnpj AS DOCUMENTO, BANCO.nome as NOME_BANCO, BANCO.agencia, BANCO.CC FROM PIXKEY INNER JOIN CONTA ON PIXKEY.conta_id = CONTA.id INNER JOIN BANCO ON PIXKEY.banco_id = BANCO.id')
 };
 
 const getById = async (id) => {
@@ -27,6 +27,9 @@ const create = async (data) => {
     }
     if (!validation.pix_key.when.pix_key_type[tipochave].pattern.test(data.chavepix)) {
         throw { message: `O valor ${data.chavepix} não é válido para o tipo de chave ${data.tipochave}`, statusCode: 400 };
+    }
+    if (!validation.pix_key.when.pix_key_type['EMAIL'].pattern.test(data.email)) {
+        throw { message: "O email não é válido", statusCode: 400 };
     }
     const { banco_id, conta_id } = data;
     const banco = await Banco.findByPk(banco_id);
@@ -52,6 +55,9 @@ const update = async (id, data) => {
     }
     if (!validation.pix_key.when.pix_key_type[tipochave].pattern.test(data.chavepix)) {
         throw { message: `O valor ${data.pix_key} não é válido para o tipo de chave ${data.tipochave}`, statusCode: 400 };
+    }
+    if (!validation.pix_key.when.pix_key_type['EMAIL'].pattern.test(data.email)) {
+        throw { message: "O email não é válido", statusCode: 400 };
     }
     const { banco_id, conta_id } = data;
     const banco = await Banco.findByPk(banco_id);

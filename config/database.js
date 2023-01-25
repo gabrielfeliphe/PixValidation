@@ -16,9 +16,9 @@ const sequelize = new Sequelize(process.env.DATABASE_URL, {
     acquire: 30000,
     idle: 2
   },
-  logging: false
+  //logging: false
 });
 
-sequelize.sync();
+sequelize.sync({alter: true});
 
 module.exports = {sequelize}
