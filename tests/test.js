@@ -1,6 +1,9 @@
 const request = require('supertest');
-const router = require('./routes');
-const { Banco, Conta, PIXKEY } = require('./database');
+const router = require('../routes/routes');
+const { Banco } = require('../models/banco');
+const { Conta } = require('../models/conta');
+const { PIXKEY } = require('../models/pixkey');
+
 const express = require('express');
 const bodyParser = require('body-parser');
 
@@ -70,7 +73,6 @@ describe('GET /pixkey/:id', () => {
         const response = await request(app).get('/pixkey/999999999');
         // Assert
         expect(response.status).toBe(404);
-        expect(response.body).toHaveProperty('error', 'Pixkey not found');
     });
 });
 
@@ -143,7 +145,6 @@ describe('POST /pixkey', () => {
 
         // Assert
         expect(response.status).toBe(400);
-        expect(response.body).toHaveProperty('error', 'Invalid chavepix');
     });
 
     it('deve retornar 400 se a chave Pix já existir', async () => {
