@@ -47,12 +47,12 @@ exports.update = async (req, res) => {
 exports.remove = async (req, res) => {
     try {
         const conta = await contaService.remove(req.params.id);
-        if (!conta) {
-            res.status(404).json({ error: 'Conta not found' });
-        } else {
-            res.json({ message: 'Conta deleted successfully' });
-        }
+        res.json({ message: 'Conta deleted successfully' });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        if (err.statusCode) {
+            res.status(err.statusCode).json({ error: err.message });
+        } else {
+            res.status(500).json({ error: err.message });
+        }
     }
 };
