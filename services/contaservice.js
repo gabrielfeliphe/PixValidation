@@ -1,4 +1,6 @@
 const { Conta } = require('../models/conta');
+const { PIXKEY } = require('../models/pixkey');
+
 
 const getAll = async () => {
     return await Conta.findAll();
@@ -19,6 +21,10 @@ const update = async (id, data) => {
 
 const remove = async (id) => {
     const conta = await Conta.findByPk(id);
+    const pixkey = await PIXKEY.findOne({ where: { conta_id: id } });
+    if(pixkey){
+        throw { message: "Não foi possivel excluir essa conta pois possui uma chave pix associada", statusCode: 400 };
+    }
     return await conta.destroy();
 };
 
