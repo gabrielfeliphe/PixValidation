@@ -1,7 +1,7 @@
 require('dotenv').config({ path: process.cwd() + '/config/.env' });
 const Sequelize = require("sequelize");
 
-const sequelize = new Sequelize(process.env.DATABASE_URL, {
+const sequelize = new Sequelize(process.env.DATABASE_URL || 'mysql://root:toor@db:3306/dbapi', {
   dialect: 'mysql',
   dialectModule: require('mysql2'),
   dialectOptions: {

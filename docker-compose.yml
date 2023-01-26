@@ -1,0 +1,27 @@
+version: '3'
+services:
+  db:
+    image: mysql:8.0
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: toor
+      MYSQL_DATABASE: dbapi
+    ports:
+      - "3306:3306"
+    command: --default-authentication-plugin=mysql_native_password --init-file=/docker-entrypoint-initdb.d/init.sql
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 8s
+      retries: 10
+  app:
+    depends_on:
+       db: 
+          condition: service_healthy
+    build: .
+    environment:
+      PORT: 3000
+    ports:
+      - "3000:3000"
+    restart: on-failure
