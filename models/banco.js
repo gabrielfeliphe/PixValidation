@@ -12,11 +12,11 @@ const Banco = sequelize.define('BANCO', {
       allowNull: false
     },
     agencia: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       allowNull: false
     },
     CC: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       allowNull: false
     },
   }, {
