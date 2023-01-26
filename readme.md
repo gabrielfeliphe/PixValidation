@@ -47,3 +47,23 @@ Atualiza um registro existente na tabela CONTA com o ID especificado e as inform
 
 DELETE api/conta/:id:
 Deleta um registro existente na tabela CONTA com o ID especificado.
+
+
+## Como executar este container Docker
+
+Para rodar este container, você precisará ter o Docker instalado em sua máquina.
+
+Faça o download do arquivo Dockerfile deste repositório.
+Abra o terminal e navegue até a pasta onde você baixou o Dockerfile.
+Execute o comando docker build -t nome-da-imagem . para criar a imagem a partir do Dockerfile.
+Execute o comando 
+```docker run -p 3000:3000 nome-da-imagem``` para iniciar o container.
+O container será iniciado e a sua aplicação estará disponível em 
+```http://localhost:3000```
+
+Caso você queira rodar os testes, é só adicionar o comando npm test no final do comando docker run:
+
+```
+docker run -p 3000:3000 nome-da-imagem npm test
+```
+Obs: Lembre-se de que se você estiver utilizando outra porta, deve-se substituir a porta 3000 pelo número da porta desejada.
