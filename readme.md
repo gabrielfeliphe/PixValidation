@@ -63,9 +63,17 @@ O container será iniciado e a sua aplicação estará disponível em
 
 ## Testes
 
-Caso você queira rodar os testes, é só adicionar o comando npm test no final do comando docker run:
+Caso você queira rodar os testes, é só adicionar o comando ```npm test``` conectado a um banco de dados
 
 ```
 npm run test
 ```
+
+## Levantando ambiente
+
+O projeto conta com um docker-compose, para utiliza-lo use o seguinte código ```docker-compose up``` com isso será levantando o ambiente pronto para utilizar;
+
+## Ambiente
+
+pode-se criar um arquivo .env na pasta config adicionando ```DATABASE_URL='URL-DO-BANCO```
 
