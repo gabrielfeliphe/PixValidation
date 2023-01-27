@@ -75,5 +75,5 @@ O projeto conta com um docker-compose, para utiliza-lo use o seguinte código ``
 
 ## Ambiente
 
-pode-se criar um arquivo .env na pasta config adicionando ```DATABASE_URL='URL-DO-BANCO```
+pode-se criar um arquivo .env na pasta config adicionando ```DATABASE_URL='URL-DO-BANCO'```
 
