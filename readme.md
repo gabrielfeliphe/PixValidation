@@ -61,9 +61,11 @@ Execute o comando
 O container será iniciado e a sua aplicação estará disponível em 
 ```http://localhost:3000```
 
+## Testes
+
 Caso você queira rodar os testes, é só adicionar o comando npm test no final do comando docker run:
 
 ```
-docker run -p 3000:3000 nome-da-imagem npm test
+npm run test
 ```
-Obs: Lembre-se de que se você estiver utilizando outra porta, deve-se substituir a porta 3000 pelo número da porta desejada.
+
