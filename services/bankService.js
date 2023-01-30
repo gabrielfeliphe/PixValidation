@@ -1,4 +1,4 @@
-const { Banco } = require('../models/banco');
+const { Banco } = require('../models/bank');
 
 const getAll = async () => {
     return await Banco.findAll();

@@ -1,4 +1,4 @@
-const { sequelize } = require('../config/database');
+const { sequelize } = require('../config/connection');
 const Sequelize = require('sequelize')
 
 const Banco = sequelize.define('BANCO', {

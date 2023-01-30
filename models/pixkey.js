@@ -1,4 +1,4 @@
-const { sequelize } = require('../config/database');
+const { sequelize } = require('../config/connection');
 const Sequelize = require('sequelize')
 
 const PIXKEY = sequelize.define('PIXKEY', {
@@ -38,3 +38,4 @@ const PIXKEY = sequelize.define('PIXKEY', {
   const GetAllByQuery = (query) => sequelize.query(query, { type: sequelize.QueryTypes.SELECT });
 
   module.exports = {PIXKEY,GetAllByQuery};
+

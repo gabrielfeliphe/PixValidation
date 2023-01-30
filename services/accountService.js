@@ -1,4 +1,4 @@
-const { Conta } = require('../models/conta');
+const { Conta } = require('../models/account');
 const { PIXKEY } = require('../models/pixkey');
 
 
