@@ -2,6 +2,7 @@ const { sequelize } = require('../config/database');
 const Sequelize = require('sequelize')
 
 const Account = sequelize.define('CONTA', {
+
     id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -21,3 +22,4 @@ const Account = sequelize.define('CONTA', {
 });
 
 module.exports = {Account};
+

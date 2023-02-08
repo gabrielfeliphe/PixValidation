@@ -1,5 +1,6 @@
 const contaService = require('../services/accountService');
 
+
 exports.getAll = async (req, res) => {
     try {
         const contas = await contaService.getAll();

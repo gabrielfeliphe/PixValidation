@@ -13,34 +13,36 @@ const app = express();
 app.use(bodyParser.json());
 app.use(router);
 
+var pixkeyId,accountId,bankId;
+
+const createMockData = async () => {
+    // Cria um registro PIXKEY
+    const [pixkey] = await PIXKEY.findOrCreate({
+        where: { chavepix: '873.078.680-08' },
+        defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true, email:"EMAILLEGAL@BEMLEGALZAO.COM" }
+    });
+
+    // Cria um registro Banco
+    const [bank] = await Banco.findOrCreate({
+        where: { nome: 'Banco do Brasil' },
+        defaults: { nome: 'Banco do Brasil', agencia: 1, CC: 1 }
+    });
+
+    // Cria um registro Conta
+    const [account] = await Conta.findOrCreate({
+        where: { cpf_cnpj: '873.078.680-08' },
+        defaults: { cpf_cnpj: '873.078.680-08', nome: 'Geraldo' }
+    });
+
+    pixkeyId = pixkey;
+    accountId = account;
+    bankId = bank;
+}
+
+beforeAll(() => createMockData());
+
+
 describe('GET /pixkey', () => {
-
-    var PIX;
-    beforeAll(async () => {
-        const [pixkey, created] = await PIXKEY.findOrCreate({
-            where: { chavepix: '873.078.680-08' },
-            defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true, email:"EMAILLEGAL@BEMLEGALZAO.COM" }
-        });
-        PIX = pixkey;
-    });
-
-    var bankId;
-    beforeAll(async () => {
-        const [bank, created] = await Banco.findOrCreate({
-            where: { nome: 'Banco do Brasil' },
-            defaults: { nome: 'Banco do Brasil', agencia: 1, CC: 1 }
-        });
-        bankId = bank.id;
-    });
-
-    var accountId;
-    beforeAll(async () => {
-        const [account, created] = await Conta.findOrCreate({
-            where: { cpf_cnpj: '873.078.680-08' },
-            defaults: { cpf_cnpj: '873.078.680-08', nome: 'Geraldo' }
-        });
-        accountId = account.id;
-    });
 
     it('deve retornar todas as chaves Pix', async () => {
         var res = await request(app).get('/pixkey');
@@ -50,18 +52,9 @@ describe('GET /pixkey', () => {
 
 describe('GET /pixkey/:id', () => {
 
-    var pixkeyId;
-    beforeAll(async () => {
-        const [pixkey, created] = await PIXKEY.findOrCreate({
-            where: { chavepix: '873.078.680-08' },
-            defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"}
-        });
-        pixkeyId = pixkey.id;
-    });
-
     it('deve retornar uma chave Pix específica', async () => {
         // Act
-        const response = await request(app).get(`/pixkey/${pixkeyId}`);
+        const response = await request(app).get(`/pixkey/${pixkeyId.id}`);
 
         // Assert
         expect(response.status).toBe(200);
@@ -79,38 +72,11 @@ describe('GET /pixkey/:id', () => {
 
 describe('POST /pixkey', () => {
 
-    var pixkeyId;
-    beforeAll(async () => {
-        const [pixkey, created] = await PIXKEY.findOrCreate({
-            where: { chavepix: '873.078.680-08' },
-            defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"}
-        });
-        pixkeyId = pixkey.id;
-    });
-
-    var bankId;
-    beforeAll(async () => {
-        const [bank, created] = await Banco.findOrCreate({
-            where: { nome: 'Banco do Brasil' },
-            defaults: { nome: 'Banco do Brasil', agencia: 1, CC: 1 }
-        });
-        bankId = bank.id;
-    });
-
-    var accountId;
-    beforeAll(async () => {
-        const [account, created] = await Conta.findOrCreate({
-            where: { cpf_cnpj: '873.078.680-08' },
-            defaults: { cpf_cnpj: '873.078.680-08', nome: 'Geraldo' }
-        });
-        accountId = account.id;
-    });
-
     it('deve criar uma nova chave Pix', async () => {
         // Act
         const response = await request(app)
             .post('/pixkey')
-            .send({ chavepix: uuidv4(), banco_id: bankId, conta_id: accountId, tipochave: 'CHAVE_ALEATORIA', validado: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+            .send({ chavepix: uuidv4(), banco_id: bankId.id, conta_id: accountId.id, tipochave: 'CHAVE_ALEATORIA', validado: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
         // Assert
         expect(response.status).toBe(200);
     });
@@ -170,38 +136,11 @@ describe('POST /pixkey', () => {
 
 describe('PUT /pixkey/:id', () => {
 
-    var PIX;
-    beforeAll(async () => {
-        const [pixkey, created] = await PIXKEY.findOrCreate({
-            where: { chavepix: '873.078.680-08' },
-            defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true, email:"EMAILLEGAL@BEMLEGALZAO.COM" }
-        });
-        PIX = pixkey;
-    });
-
-    var bankId;
-    beforeAll(async () => {
-        const [bank, created] = await Banco.findOrCreate({
-            where: { nome: 'Banco do Brasil' },
-            defaults: { nome: 'Banco do Brasil', agencia: 1, CC: 1 }
-        });
-        bankId = bank.id;
-    });
-
-    var accountId;
-    beforeAll(async () => {
-        const [account, created] = await Conta.findOrCreate({
-            where: { cpf_cnpj: '873.078.680-08' },
-            defaults: { cpf_cnpj: '873.078.680-08', nome: 'Geraldo' }
-        });
-        accountId = account.id;
-    });
-
     it('deve atualizar uma chave Pix existente', async () => {
 
         // Act
         const response = await request(app)
-            .put(`/pixkey/${PIX.id}`)
+            .put(`/pixkey/${pixkeyId.id}`)
             .send({ chavepix: '931.946.870-26', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
@@ -232,18 +171,9 @@ describe('PUT /pixkey/:id', () => {
 
 describe('DELETE /pixkey/:id', () => {
 
-    var pixkeyId;
-    beforeAll(async () => {
-        const [pixkey, created] = await PIXKEY.findOrCreate({
-            where: { chavepix: '04430029-5ace-4605-88db-e147ecf7781f' },
-            defaults: { chavepix: '04430029-5ace-4605-88db-e147ecf7781f', banco_id: 1, conta_id: 1, tipochave: 'CHAVE_ALEATORIA', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"}
-        });
-        pixkeyId = pixkey.id;
-    });
-
     it('deve excluir uma chave Pix existente', async () => {
 
-        const response = await request(app).delete(`/pixkey/${pixkeyId}`);
+        const response = await request(app).delete(`/pixkey/${pixkeyId.id}`);
 
         // Assert
         expect(response.status).toBe(200);

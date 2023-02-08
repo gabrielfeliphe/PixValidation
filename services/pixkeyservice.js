@@ -1,6 +1,8 @@
 const { PIXKEY, GetAllByQuery } = require('../models/pixkey');
+
 const { Account } = require('../models/account');
 const { Bank } = require('../models/bank');
+
 const validation = require('../middlewares/validation');
 
 const getAllByQuery = async () => { // Query foi feita, pois o bank utilizado não aceita FK então as associações tiveram de ser feitas na mão

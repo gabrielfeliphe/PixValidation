@@ -1,6 +1,6 @@
 const { Account } = require('../models/account');
-const { PIXKEY } = require('../models/pixkey');
 
+const { PIXKEY } = require('../models/pixkey');
 
 const getAll = async () => {
     return await Account.findAll();
