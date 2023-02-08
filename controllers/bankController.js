@@ -1,4 +1,5 @@
-const bancoService = require('../services/bancoservice');
+const bancoService = require('../services/bankService');
+
 
 exports.getAll = async (req, res) => {
     try {

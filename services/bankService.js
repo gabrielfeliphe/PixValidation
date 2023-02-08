@@ -1,25 +1,25 @@
-const { Banco } = require('../models/bank');
+const { Bank } = require('../models/bank');
 
 const getAll = async () => {
-    return await Banco.findAll();
+    return await Bank.findAll();
 };
 
 const getById = async (id) => {
-    return await Banco.findByPk(id);
+    return await Bank.findByPk(id);
 };
 
 const create = async (data) => {
-    return  await Banco.create(data);
+    return  await Bank.create(data);
 }
 
 const update = async (id, data) => {
-    const banco = await Banco.findByPk(id);
-    return await banco.update(data);
+    const bank = await Bank.findByPk(id);
+    return await bank.update(data);
 };
 
 const remove = async (id) => {
-    const banco = await Banco.findByPk(id);
-    return await banco.destroy();
+    const bank = await Bank.findByPk(id);
+    return await bank.destroy();
 };
 
 module.exports = {

@@ -1,31 +1,31 @@
-const { Conta } = require('../models/account');
+const { Account } = require('../models/account');
+
 const { PIXKEY } = require('../models/pixkey');
 
-
 const getAll = async () => {
-    return await Conta.findAll();
+    return await Account.findAll();
 };
 
 const getById = async (id) => {
-    return await Conta.findByPk(id);
+    return await Account.findByPk(id);
 };
 
 const create = async (data) => {
-    return  await Conta.create(data);
+    return  await Account.create(data);
 }
 
 const update = async (id, data) => {
-    const conta = await Conta.findByPk(id);
-    return await conta.update(data);
+    const account = await Account.findByPk(id);
+    return await account.update(data);
 };
 
 const remove = async (id) => {
-    const conta = await Conta.findByPk(id);
-    const pixkey = await PIXKEY.findOne({ where: { conta_id: id } });
+    const account = await Account.findByPk(id);
+    const pixkey = await PIXKEY.findOne({ where: { account_id: id } });
     if(pixkey){
-        throw { message: "Não foi possivel excluir essa conta pois possui uma chave pix associada", statusCode: 400 };
+        throw { message: "It was not possible to delete this account because it has an associated pix key", statusCode: 400 };
     }
-    return await conta.destroy();
+    return await account.destroy();
 };
 
 module.exports = {

@@ -1,7 +1,7 @@
-const { sequelize } = require('../config/connection');
+const { sequelize } = require('../config/database');
 const Sequelize = require('sequelize')
 
-const Banco = sequelize.define('BANCO', {
+const Bank = sequelize.define('BANCO', {
     id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
@@ -23,4 +23,4 @@ const Banco = sequelize.define('BANCO', {
     freezeTableName: true
 });
 
-module.exports = { Banco };
+module.exports = { Bank };

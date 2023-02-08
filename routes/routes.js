@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const pixkeyController = require('../controllers/pixkeycontroller');
-const bancoController = require('../controllers/bancocontroller');
-const contaController = require('../controllers/contacontroller');
+const pixkeyController = require('../controllers/pixkeyController');
+const bankController = require('../controllers/bankController');
+const accountController = require('../controllers/accountController');
 
 router.get('/pixkey', pixkeyController.getAllPixkeys);
 router.get('/pixkey/:id', pixkeyController.getPixkeyById);
@@ -10,16 +10,16 @@ router.post('/pixkey', pixkeyController.createPixkey);
 router.put('/pixkey/:id', pixkeyController.updatePixkey);
 router.delete('/pixkey/:id', pixkeyController.removePixkey);
 
-router.get('/banco', bancoController.getAll);
-router.post('/banco', bancoController.create);
-router.get('/banco/:id', bancoController.getById);
-router.put('/banco/:id', bancoController.update);
-router.delete('/banco/:id', bancoController.remove);
+router.get('/bank', bankController.getAll);
+router.post('/bank', bankController.create);
+router.get('/bank/:id', bankController.getById);
+router.put('/bank/:id', bankController.update);
+router.delete('/bank/:id', bankController.remove);
 
-router.get('/conta', contaController.getAll);
-router.post('/conta', contaController.create);
-router.get('/conta/:id', contaController.getById);
-router.put('/conta/:id', contaController.update);
-router.delete('/conta/:id', contaController.remove);
+router.get('/account', accountController.getAll);
+router.post('/account', accountController.create);
+router.get('/account/:id', accountController.getById);
+router.put('/account/:id', accountController.update);
+router.delete('/account/:id', accountController.remove);
 
 module.exports = router;
