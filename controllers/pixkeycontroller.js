@@ -1,4 +1,4 @@
-const { getAllByQuery, getById, create, update, remove } = require('../services/pixkeyservice');
+const { getAllByQuery, getById, create, update, remove } = require('../services/pixkeyService');
 
 const getAllPixkeys = async (req, res) => {
     try {

@@ -1,4 +1,4 @@
-const contaService = require('../services/contaservice');
+const contaService = require('../services/accountService');
 
 exports.getAll = async (req, res) => {
     try {
