@@ -23,7 +23,7 @@ const remove = async (id) => {
     const account = await Account.findByPk(id);
     const pixkey = await PIXKEY.findOne({ where: { account_id: id } });
     if(pixkey){
-        throw { message: "It was not possible to delete this account because it has an associated pix key", statusCode: 400 };
+        throw { message: "It was not possible to delete this account because it has an associated pix key.", statusCode: 400 };
     }
     return await account.destroy();
 };

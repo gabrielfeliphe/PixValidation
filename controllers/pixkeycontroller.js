@@ -51,7 +51,7 @@ const updatePixkey = async (req, res) => {
 const removePixkey = async (req, res) => {
     try {
         await remove(req.params.id);
-        res.json({ message: 'Pixkey removed successfully' });
+        res.json({ message: 'Pixkey removed successfully.' });
     } catch (err) {
         res.status(err.statusCode || 500).json({ error: err.message });
     }
