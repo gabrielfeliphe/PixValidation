@@ -164,7 +164,7 @@ describe('PUT /pixkey/:id', () => {
         // Act
         const response = await request(app)
             .put(`/pixkey/${pixkeyId.id}`)
-            .send({ pixKey: '931.946.870-26', bank_id: 1, account_id: 1, typeOfKey: 'CPF', valid: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+            .send({ pixKey: generate({ format: true }), bank_id: 1, account_id: 1, typeOfKey: 'CPF', valid: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(200);
@@ -175,7 +175,7 @@ describe('PUT /pixkey/:id', () => {
         // Act
         const response = await request(app)
             .put('/pixkey/1')
-            .send({ pixKey: '931.946.870-26', bank_id: 999, account_id: 999, typeOfKey: 'CPF', valid: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+            .send({ pixKey: generate({ format: true }), bank_id: 999, account_id: 999, typeOfKey: 'CPF', valid: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(404);
@@ -185,7 +185,7 @@ describe('PUT /pixkey/:id', () => {
         // Act
         const response = await request(app)
             .put('/pixkey/99999')
-            .send({ pixKey: '684.495.170-10', bank_id: 1, account_id: 1, typeOfKey: 'CPF', valid: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+            .send({ pixKey: generate({ format: true }), bank_id: 1, account_id: 1, typeOfKey: 'CPF', valid: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(404);
