@@ -1,4 +1,4 @@
-const { sequelize } = require('../config/connection');
+const { sequelize } = require('../API/config/connection');
 const Sequelize = require('sequelize')
 
 const PIXKEY = sequelize.define('PIXKEY', {
