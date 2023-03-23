@@ -12,7 +12,7 @@ const PIXKEY = sequelize.define('PIXKEY', {
       allowNull: false
     },
     bank_id: {
-      type: Sequelize.STRING,
+      type: Sequelize.INTEGER,
       allowNull: false,
     },
     account_id: {
