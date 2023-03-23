@@ -1,8 +1,9 @@
 const request = require('supertest');
 const router = require('../routes/routes');
-const { Banco } = require('../models/banco');
-const { Conta } = require('../models/conta');
+const { Bank } = require('../models/bank');
+const { Account } = require('../models/account');
 const { PIXKEY } = require('../models/pixkey');
+const { generate } = require('gerador-validador-cpf');
 
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -13,31 +14,44 @@ const app = express();
 app.use(bodyParser.json());
 app.use(router);
 
-var pixkeyId,accountId,bankId;
+var pixkeyId,accountId,bankId,cpfMock;
 
 const createMockData = async () => {
+
+    cpfMock = generate({ format: true });
+
     // Cria um registro PIXKEY
     const [pixkey] = await PIXKEY.findOrCreate({
-        where: { chavepix: '873.078.680-08' },
-        defaults: { chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true, email:"EMAILLEGAL@BEMLEGALZAO.COM" }
+      where: { pixkey: cpfMock},
+      defaults: {
+        pixKey: cpfMock,
+        bank_id: 1,
+        account_id: 1,
+        typeOfKey: 'CPF',
+        valid: true,
+        email: 'EMAILLEGAL@BEMLEGALZAO.COM',
+      },
     });
-
+  
     // Cria um registro Banco
-    const [bank] = await Banco.findOrCreate({
-        where: { nome: 'Banco do Brasil' },
-        defaults: { nome: 'Banco do Brasil', agencia: 1, CC: 1 }
+    const [bank] = await Bank.findOrCreate({
+      where: { name: 'Banco do Brasil' },
+      defaults: { name: 'Banco do Brasil', agency: '1', accountNumber: '1' },
     });
-
+  
     // Cria um registro Conta
-    const [account] = await Conta.findOrCreate({
-        where: { cpf_cnpj: '873.078.680-08' },
-        defaults: { cpf_cnpj: '873.078.680-08', nome: 'Geraldo' }
+    const [account] = await Account.findOrCreate({
+      where: { federalDocument: cpfMock },
+      defaults: { federalDocument: cpfMock, name: 'Geraldo' },
     });
-
+  
     pixkeyId = pixkey;
     accountId = account;
     bankId = bank;
-}
+
+    console.log("CPF MOCK" + cpfMock)
+  };
+  
 
 beforeAll(() => createMockData());
 
@@ -58,7 +72,7 @@ describe('GET /pixkey/:id', () => {
 
         // Assert
         expect(response.status).toBe(200);
-        expect(response.body).toHaveProperty('chavepix', '873.078.680-08');
+        expect(response.body).toHaveProperty('pixKey', cpfMock);
     });
 
     it('deve retornar 404 se a chave Pix não for encontrada', async () => {
@@ -74,18 +88,27 @@ describe('POST /pixkey', () => {
 
     it('deve criar uma nova chave Pix', async () => {
         // Act
-        const response = await request(app)
-            .post('/pixkey')
-            .send({ chavepix: uuidv4(), banco_id: bankId.id, conta_id: accountId.id, tipochave: 'CHAVE_ALEATORIA', validado: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+        const response = await request(app).post('/pixkey').send({
+          pixKey: uuidv4(),
+          bank_id: bankId.id,
+          account_id: accountId.id,
+          typeOfKey: 'CHAVE_ALEATORIA',
+          valid: false,
+          email: 'EMAILLEGAL@BEMLEGALZAO.COM',
+        });
         // Assert
+        if (response.status !== 200) {
+          console.log(response.body);
+        }
         expect(response.status).toBe(200);
-    });
+      });
+      
 
     it('deve retornar 404 se o banco ou a conta não for encontrado', async () => {
         // Act
         const response = await request(app)
             .post('/pixkey')
-            .send({ chavepix: '873.078.680-08', banco_id: 9999, conta_id: 99999, tipochave: 'CPF', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+            .send({ pixKey: cpfMock, bank_id: 9999, account_id: 99999, typeOfKey: 'CPF', valid: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
 
         // Assert
@@ -96,7 +119,7 @@ describe('POST /pixkey', () => {
         // Act
         const response = await request(app)
             .post('/pixkey')
-            .send({ chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'invalid_key_type', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+            .send({ pixKey: cpfMock, bank_id: 1, account_id: 1, typeOfKey: 'invalid_key_type', valid: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(400);
@@ -107,7 +130,7 @@ describe('POST /pixkey', () => {
         // Act
         const response = await request(app)
             .post('/pixkey')
-            .send({ chavepix: 'invalid_key', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+            .send({ pixKey: 'invalid_key', bank_id: 1, account_id: 1, typeOfKey: 'CPF', valid: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(400);
@@ -117,7 +140,7 @@ describe('POST /pixkey', () => {
         // Act
         const response = await request(app)
             .post('/pixkey')
-            .send({ chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+            .send({ pixKey: cpfMock, bank_id: 1, account_id: 1, typeOfKey: 'CPF', valid: true , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(400);
@@ -127,7 +150,7 @@ describe('POST /pixkey', () => {
         // Act
         const response = await request(app)
             .post('/pixkey')
-            .send({ chavepix: '873.078.680-08', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: true , email:"email invalido 777 raffa moreira mano"});
+            .send({ pixKey: cpfMock, bank_id: 1, account_id: 1, typeOfKey: 'CPF', valid: true , email:"email invalido 777 raffa moreira mano"});
 
         // Assert
         expect(response.status).toBe(400);
@@ -141,7 +164,7 @@ describe('PUT /pixkey/:id', () => {
         // Act
         const response = await request(app)
             .put(`/pixkey/${pixkeyId.id}`)
-            .send({ chavepix: '931.946.870-26', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+            .send({ pixKey: '931.946.870-26', bank_id: 1, account_id: 1, typeOfKey: 'CPF', valid: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(200);
@@ -152,7 +175,7 @@ describe('PUT /pixkey/:id', () => {
         // Act
         const response = await request(app)
             .put('/pixkey/1')
-            .send({ chavepix: '931.946.870-26', banco_id: 999, conta_id: 999, tipochave: 'CPF', validado: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+            .send({ pixKey: '931.946.870-26', bank_id: 999, account_id: 999, typeOfKey: 'CPF', valid: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(404);
@@ -162,7 +185,7 @@ describe('PUT /pixkey/:id', () => {
         // Act
         const response = await request(app)
             .put('/pixkey/99999')
-            .send({ chavepix: '684.495.170-10', banco_id: 1, conta_id: 1, tipochave: 'CPF', validado: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
+            .send({ pixKey: '684.495.170-10', bank_id: 1, account_id: 1, typeOfKey: 'CPF', valid: false , email:"EMAILLEGAL@BEMLEGALZAO.COM"});
 
         // Assert
         expect(response.status).toBe(404);

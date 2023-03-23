@@ -1,7 +1,7 @@
 const { sequelize } = require('../config/connection');
 const Sequelize = require('sequelize')
 
-const Account = sequelize.define('CONTA', {
+const Account = sequelize.define('ACCOUNT', {
 
     id: {
         type: Sequelize.INTEGER,
@@ -9,11 +9,11 @@ const Account = sequelize.define('CONTA', {
         autoIncrement: true,
         allowNull: false
     },
-    nome: {
+    name: {
         type: Sequelize.STRING,
         allowNull: false
     },
-    cpf_cnpj: {
+    federalDocument: {
         type: Sequelize.STRING,
         allowNull: false
     }

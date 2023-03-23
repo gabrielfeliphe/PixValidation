@@ -6,7 +6,7 @@ const { Bank } = require('../models/bank');
 const validation = require('../middlewares/validation');
 
 const getAllByQuery = async () => { // Query foi feita, pois o bank utilizado não aceita FK então as associações tiveram de ser feitas na mão
-    return await GetAllByQuery('SELECT DISTINCT PIXKEY.*, CONTA.nome as TITULAR, CONTA.cpf_cnpj AS DOCUMENTO, BANCO.nome as NOME_BANCO, BANCO.agencia, BANCO.CC FROM PIXKEY INNER JOIN CONTA ON PIXKEY.conta_id = CONTA.id INNER JOIN BANCO ON PIXKEY.banco_id = BANCO.id')
+    return await GetAllByQuery('SELECT DISTINCT PIXKEY.*, ACCOUNT.name as ACCOUNT_HOLDER, ACCOUNT.federalDocument AS FederalDocument, BANK.name as BANK_NAME, BANK.agency, BANK.accountNumber FROM PIXKEY INNER JOIN ACCOUNT ON PIXKEY.account_id = ACCOUNT.id INNER JOIN BANK ON PIXKEY.bank_id = BANK.id')
 };
 
 const getById = async (id) => {
@@ -22,13 +22,13 @@ const getById = async (id) => {
 };
 
 const create = async (data) => {
-    const { tipochave } = data;
-    const isValidType = validation.pix_key_type.allowedTypes.includes(tipochave);
+    const { typeOfKey } = data;
+    const isValidType = validation.pix_key_type.allowedTypes.includes(typeOfKey);
     if (!isValidType) {
         throw { message: "Key type is invalid.", statusCode: 400 };
     }
-    if (!validation.pix_key.when.pix_key_type[tipochave].pattern.test(data.chavepix)) {
-        throw { message: `The value ${data.chavepix} not is valid for ${data.tipochave}.`, statusCode: 400 };
+    if (!validation.pix_key.when.pix_key_type[typeOfKey].pattern.test(data.pixKey)) {
+        throw { message: `The value ${data.pixKey} not is valid for ${data.typeOfKey}.`, statusCode: 400 };
     }
     if (!validation.pix_key.when.pix_key_type['EMAIL'].pattern.test(data.email)) {
         throw { message: "The email is not valid.", statusCode: 400 };
@@ -42,7 +42,7 @@ const create = async (data) => {
     if (!account) {
         throw { message: "Account not found.", statusCode: 404 };
     }
-    const existingPixKey = await PIXKEY.findOne({ where: { chavepix: data.chavepix } });
+    const existingPixKey = await PIXKEY.findOne({ where: { pixKey: data.pixKey } });
     if (existingPixKey) {
         throw { message: "Existing Pix Key.", statusCode: 400 };
     }
@@ -50,13 +50,13 @@ const create = async (data) => {
 };
 
 const update = async (id, data) => {
-    const { tipochave } = data;
-    const isValidType = validation.pix_key_type.allowedTypes.includes(tipochave);
+    const { typeOfKey } = data;
+    const isValidType = validation.pix_key_type.allowedTypes.includes(typeOfKey);
     if (!isValidType) {
         throw { message: "Key type is invalid.", statusCode: 400 };
     }
-    if (!validation.pix_key.when.pix_key_type[tipochave].pattern.test(data.chavepix)) {
-        throw { message: `The value ${data.pix_key} is not valid for the key type: ${data.tipochave}.`, statusCode: 400 };
+    if (!validation.pix_key.when.pix_key_type[typeOfKey].pattern.test(data.pixKey)) {
+        throw { message: `The value ${data.pix_key} is not valid for the key type: ${data.typeOfKey}.`, statusCode: 400 };
     }
     if (!validation.pix_key.when.pix_key_type['EMAIL'].pattern.test(data.email)) {
         throw { message: "The email is not valid.", statusCode: 400 };

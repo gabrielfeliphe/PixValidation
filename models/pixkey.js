@@ -7,23 +7,23 @@ const PIXKEY = sequelize.define('PIXKEY', {
       primaryKey: true,
       autoIncrement: true
     },
-    chavepix: {
+    pixKey: {
       type: Sequelize.STRING,
       allowNull: false
     },
-    banco_id: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    conta_id: {
-      type: Sequelize.INTEGER,
-      allowNull: false,
-    },
-    tipochave: {
+    bank_id: {
       type: Sequelize.STRING,
       allowNull: false,
     },
-    validado: {
+    account_id: {
+      type: Sequelize.INTEGER,
+      allowNull: false,
+    },
+    typeOfKey: {
+      type: Sequelize.STRING,
+      allowNull: false,
+    },
+    valid: {
       type: Sequelize.BOOLEAN,
       allowNull: false,
     },
