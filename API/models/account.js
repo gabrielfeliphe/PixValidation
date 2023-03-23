@@ -1,4 +1,4 @@
-const { sequelize } = require('../API/config/connection');
+const { sequelize } = require('../config/connection');
 const Sequelize = require('sequelize')
 
 const Account = sequelize.define('ACCOUNT', {
